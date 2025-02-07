@@ -45,4 +45,34 @@ public class LoginTest {
         Assert.assertTrue(title);
         driver.quit();
     }
+
+    @Test
+    public void negativeTestlogin() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("https://www.saucedemo.com/");
+        driver.findElement(By.id("user-name")).sendKeys("test_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+        String error = driver.findElement(By.cssSelector("[data-test=error]")).getText();
+        Assert.assertEquals(error, "Epic sadface: Username and password do not match any user in this service");
+
+        driver.quit();
+    }
+
+    @Test
+    public void negativeTestPassword() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("https://www.saucedemo.com/");
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("");
+        driver.findElement(By.id("login-button")).click();
+        String error = driver.findElement(By.cssSelector("[data-test=error]")).getText();
+        Assert.assertEquals(error, "Epic sadface: Password is required");
+
+        driver.quit();
+    }
 }
